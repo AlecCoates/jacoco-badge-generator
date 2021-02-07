@@ -87,7 +87,7 @@ def computeCoverage(filename) :
     covered_untested = 0
     missedBranches_tested = 0
     missedBranches_untested = 0
-    coveredBranches = 0
+    coveredBranches_tested = 0
     coveredBranches_untested = 0
     with open(filename, newline='') as csvfile :
         jacocoReader = csv.reader(csvfile)
