@@ -93,19 +93,19 @@ def computeCoverage(filename) :
         jacocoReader = csv.reader(csvfile)
         for i, row in enumerate(jacocoReader) :
             if i > 0 :
-                if int(row[3]) + int(row[4]) > 0:
+                if int(row[4]) > 0:
                     missed_tested += int(row[3])
                 else:
                     missed_untested += int(row[3])
-                if int(row[3]) + int(row[4]) > 0:
+                if int(row[4]) > 0:
                     covered_tested += int(row[4])
                 else:
                     covered_untested += int(row[4])
-                if int(row[5]) + int(row[6]) > 0:
+                if int(row[6]) > 0:
                     missedBranches_tested += int(row[5])
                 else:
                     missedBranches_untested += int(row[5])
-                if int(row[5]) + int(row[6]) > 0:
+                if int(row[6]) > 0:
                     coveredBranches_tested += int(row[6])
                 else:
                     coveredBranches_untested += int(row[6])
