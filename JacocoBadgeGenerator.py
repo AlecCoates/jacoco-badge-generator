@@ -93,19 +93,19 @@ def computeCoverage(filename) :
         jacocoReader = csv.reader(csvfile)
         for i, row in enumerate(jacocoReader) :
             if i > 0 :
-                if int(row[3]) > 0:
+                if int(row[3]) + int(row[4]) > 0:
                     missed_tested += int(row[3])
                 else:
                     missed_untested += int(row[3])
-                if int(row[4]) > 0:
+                if int(row[3]) + int(row[4]) > 0:
                     covered_tested += int(row[4])
                 else:
                     covered_untested += int(row[4])
-                if int(row[5]) > 0:
+                if int(row[5]) + int(row[6]) > 0:
                     missedBranches_tested += int(row[5])
                 else:
                     missedBranches_untested += int(row[5])
-                if int(row[6]) > 0:
+                if int(row[5]) + int(row[6]) > 0:
                     coveredBranches_tested += int(row[6])
                 else:
                     coveredBranches_untested += int(row[6])
@@ -151,25 +151,25 @@ if __name__ == "__main__" :
     jacocoBadgeFile = sys.argv[2]
 
     cov, branches, cov_tested, branches_tested = computeCoverage(jacocoCsvFile)
-    covStr, color = badgeCoverageStringColorPair(cov)
+    covStr, covColor = badgeCoverageStringColorPair(cov)
     createOutputDirectories(jacocoBadgeFile + "jacoco.svg")
     with open(jacocoBadgeFile + "jacoco.svg", "w") as badge :
-        badge.write(generateBadge(covStr, color))
+        badge.write(generateBadge(covStr, covColor))
         
-    covStr, color = badgeCoverageStringColorPair(branches)
+    branchesStr, branchesColor = badgeCoverageStringColorPair(branches)
     createOutputDirectories(jacocoBadgeFile + "jacocoBranches.svg")
     with open(jacocoBadgeFile + "jacocoBranches.svg", "w") as badge :
-        badge.write(generateBadge(covStr, color))
+        badge.write(generateBadge(branchesStr, branchesColor))
         
-    covStr, color = badgeCoverageStringColorPair(cov_tested)
+    cov_testedStr, cov_testedColor = badgeCoverageStringColorPair(cov_tested)
     createOutputDirectories(jacocoBadgeFile + "jacocoTested.svg")
     with open(jacocoBadgeFile + "jacocoTested.svg", "w") as badge :
-        badge.write(generateBadge(covStr, color))
+        badge.write(generateBadge(cov_testedStr, cov_testedColor))
         
-    covStr, color = badgeCoverageStringColorPair(cov)
+    branches_testedStr, branches_testedColor = badgeCoverageStringColorPair(branches_tested)
     createOutputDirectories(jacocoBadgeFile + "jacocoBranchesTested.svg")
     with open(jacocoBadgeFile + "jacocoBranchesTested.svg", "w") as badge :
-        badge.write(generateBadge(covStr, color))
+        badge.write(generateBadge(branches_testedStr, branches_testedColor))
 
     print("::set-output name=coverage::" + str(cov))
     print("::set-output name=branches::" + str(branches))
