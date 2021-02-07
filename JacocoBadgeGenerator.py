@@ -110,9 +110,9 @@ def computeCoverage(filename) :
                 else:
                     coveredBranches_untested += int(row[6])
     return (covered_tested + covered_untested) / ((covered_tested + covered_untested) + (missed_tested + missed_untested)), \
-           (coveredBranches_tested + coveredBranches_untested) / ((coveredBranches_tested + coveredBranches_untested) + (missedBranched_tested + missedBranches_untested)), \
+           (coveredBranches_tested + coveredBranches_untested) / ((coveredBranches_tested + coveredBranches_untested) + (missedBranches_tested + missedBranches_untested)), \
            covered_tested / (covered_tested + missed_tested), \
-           coveredBranches_tested / (coveredBranches_tested + missedBranched_tested)
+           coveredBranches_tested / (coveredBranches_tested + missedBranches_tested)
 
 def badgeCoverageStringColorPair(coverage) :
     """Converts the coverage percentage to a formatted string,
