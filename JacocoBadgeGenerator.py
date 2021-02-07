@@ -152,7 +152,22 @@ if __name__ == "__main__" :
 
     cov, branches, cov_tested, branches_tested = computeCoverage(jacocoCsvFile)
     covStr, color = badgeCoverageStringColorPair(cov)
-    createOutputDirectories(jacocoBadgeFile)
+    createOutputDirectories(jacocoBadgeFile + "jacoco.svg")
+    with open(jacocoBadgeFile, "w") as badge :
+        badge.write(generateBadge(covStr, color))
+        
+    covStr, color = badgeCoverageStringColorPair(branches)
+    createOutputDirectories(jacocoBadgeFile + "jacocoBranches.svg")
+    with open(jacocoBadgeFile, "w") as badge :
+        badge.write(generateBadge(covStr, color))
+        
+    covStr, color = badgeCoverageStringColorPair(cov_tested)
+    createOutputDirectories(jacocoBadgeFile + "jacocoTested.svg")
+    with open(jacocoBadgeFile, "w") as badge :
+        badge.write(generateBadge(covStr, color))
+        
+    covStr, color = badgeCoverageStringColorPair(cov)
+    createOutputDirectories(jacocoBadgeFile + "jacocoBranchesTested.svg")
     with open(jacocoBadgeFile, "w") as badge :
         badge.write(generateBadge(covStr, color))
 
@@ -161,7 +176,4 @@ if __name__ == "__main__" :
     print("::set-output name=coverage_tested::" + str(cov_tested))
     print("::set-output name=branches_tested::" + str(branches_tested))
     
-
-
-                
-            
+    
