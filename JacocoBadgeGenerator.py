@@ -89,6 +89,10 @@ def computeCoverage(filename) :
     missedBranches_untested = 0
     coveredBranches_tested = 0
     coveredBranches_untested = 0
+    missedLines_tested = 0
+    missedLines_untested = 0
+    coveredLines_tested = 0
+    coveredLines_untested = 0
     with open(filename, newline='') as csvfile :
         jacocoReader = csv.reader(csvfile)
         for i, row in enumerate(jacocoReader) :
@@ -109,10 +113,20 @@ def computeCoverage(filename) :
                     coveredBranches_tested += int(row[6])
                 else:
                     coveredBranches_untested += int(row[6])
+                if int(row[8]) > 0:
+                    missedLines_tested += int(row[7])
+                else:
+                    missedLines_untested += int(row[7])
+                if int(row[8]) > 0:
+                    coveredLines_tested += int(row[8])
+                else:
+                    coveredLines_untested += int(row[8])
     return (covered_tested + covered_untested) / ((covered_tested + covered_untested) + (missed_tested + missed_untested)), \
            (coveredBranches_tested + coveredBranches_untested) / ((coveredBranches_tested + coveredBranches_untested) + (missedBranches_tested + missedBranches_untested)), \
+           (coveredLines_tested + coveredLines_untested) / ((coveredLines_tested + coveredLines_untested) + (missedLines_tested + missedLines_untested)), \
            covered_tested / (covered_tested + missed_tested), \
-           coveredBranches_tested / (coveredBranches_tested + missedBranches_tested)
+           coveredBranches_tested / (coveredBranches_tested + missedBranches_tested), \
+           coveredLines_tested / (coveredLines_tested + missedLines_tested)
 
 def badgeCoverageStringColorPair(coverage) :
     """Converts the coverage percentage to a formatted string,
@@ -150,7 +164,8 @@ if __name__ == "__main__" :
     jacocoCsvFile = sys.argv[1]
     jacocoBadgeFile = sys.argv[2]
 
-    cov, branches, cov_tested, branches_tested = computeCoverage(jacocoCsvFile)
+    cov, branches, lines, cov_tested, branches_tested, lines_tested = computeCoverage(jacocoCsvFile)
+    
     covStr, covColor = badgeCoverageStringColorPair(cov)
     createOutputDirectories(jacocoBadgeFile + "jacoco.svg")
     with open(jacocoBadgeFile + "jacoco.svg", "w") as badge :
@@ -161,6 +176,11 @@ if __name__ == "__main__" :
     with open(jacocoBadgeFile + "jacocoBranches.svg", "w") as badge :
         badge.write(generateBadge(branchesStr, branchesColor))
         
+    linesStr, linesColor = badgeCoverageStringColorPair(lines)
+    createOutputDirectories(jacocoBadgeFile + "jacocoLines.svg")
+    with open(jacocoBadgeFile + "jacocoLines.svg", "w") as badge :
+        badge.write(generateBadge(linesStr, linesColor))
+        
     cov_testedStr, cov_testedColor = badgeCoverageStringColorPair(cov_tested)
     createOutputDirectories(jacocoBadgeFile + "jacocoTested.svg")
     with open(jacocoBadgeFile + "jacocoTested.svg", "w") as badge :
@@ -170,10 +190,17 @@ if __name__ == "__main__" :
     createOutputDirectories(jacocoBadgeFile + "jacocoBranchesTested.svg")
     with open(jacocoBadgeFile + "jacocoBranchesTested.svg", "w") as badge :
         badge.write(generateBadge(branches_testedStr, branches_testedColor))
+        
+    lines_testedStr, lines_testedColor = badgeCoverageStringColorPair(lines_tested)
+    createOutputDirectories(jacocoBadgeFile + "jacocoLinesTested.svg")
+    with open(jacocoBadgeFile + "jacocoLinesTested.svg", "w") as badge :
+        badge.write(generateBadge(lines_testedStr, lines_testedColor))
 
     print("::set-output name=coverage::" + str(cov))
     print("::set-output name=branches::" + str(branches))
+    print("::set-output name=lines::" + str(lines))
     print("::set-output name=coverage_tested::" + str(cov_tested))
     print("::set-output name=branches_tested::" + str(branches_tested))
+    print("::set-output name=lines_tested::" + str(lines_tested))
     
     
